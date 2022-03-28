@@ -15,7 +15,7 @@ project_id = ''
 # API_table
 API_TABLE = {
     'ID' : 'eth_blockNumber',
-    'AuthorBlock' : 'bor_getAuthor',
+    'Author' : 'bor_getAuthor',
     'Signer' : 'bor_getSignersAtHash',
     'Validator' : 'bor_getCurrentValidators',
     'Proposer' : 'bor_getCurrentProposer'
@@ -53,7 +53,7 @@ def send_request(message):
         send_API("bor_getAuthor")
         bot.send_message(message.chat.id, "Change your id")
     elif request[0] == 'Author':
-        res = send_API(API_TABLE['AuthorBlock'])
+        res = send_API(API_TABLE['Author'])
         bot.send_message(message.chat.id, "Address of author's block: " + res['result'])
     elif request[0] == 'Signer':
         res = send_API(API_TABLE['Signer'], [request[1]])
@@ -76,9 +76,15 @@ def send_request(message):
         bot.send_message('Invalid commands')
 
 
-@bot.message_handler(commands=['Hello'])
-def hello(message):
-    bot.send_message(message.chat.id, "Hello")
+@bot.message_handler(commands=['help'])
+def help(message):
+    result = "You can use these commands!!\n"
+    result += '- ID{:>10}\n'.format('[Your ID]')
+    result += '- Author{:>10}\n'.format('[Block ID]')
+    result += '- Signer{:>10}\n'.format('[Block ID]')
+    result += '- Validator\n'
+    result += '- Proposer\n'
+    bot.send_message(message.chat.id, result)
 
 bot.polling()
 
